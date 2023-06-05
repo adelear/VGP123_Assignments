@@ -25,33 +25,7 @@ public class PlayerController : MonoBehaviour {
     Coroutine speedChange = null; 
 
 
-    public int lives
-    {
-        get => _lives; 
-        set
-        {
-            //if (_lives < value) // gained a life
-            //if (_lives > value) // lost a life
-            _lives = value; 
 
-            //if (_lives <= 0 ) // gameover 
-            Debug.Log("Lives value has changed to " + _lives.ToString());
-        }
-    }
-
-    private int _lives = 3;
-
-    public int score
-    {
-        get => _score;
-        set
-        {
-            _score = value;
-            Debug.Log("Lives value has changed to " + _lives.ToString());
-        }
-    } 
-         
-    private int _score = 3; 
     // Start is called before the first frame update
     void Start() {
         

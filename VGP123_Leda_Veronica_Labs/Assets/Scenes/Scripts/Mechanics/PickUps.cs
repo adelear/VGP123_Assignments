@@ -21,19 +21,18 @@ public class PickUps : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            PlayerController myController = collision.gameObject.GetComponent<PlayerController>();
-            if (!myController) return; 
+            
 
             if (currentPickup == PickupType.Powerup1)
             {
-                // 
-                // 
+                PlayerController myController = collision.gameObject.GetComponent<PlayerController>(); 
                 myController.StartJumpForceChange();
                 Destroy(gameObject);
                 return; 
             }   
             if (currentPickup == PickupType.Powerup2)
             {
+                PlayerController myController = collision.gameObject.GetComponent<PlayerController>(); 
                 myController.StartSpeedChange();
                 Destroy(gameObject);
                 return; 
@@ -41,11 +40,12 @@ public class PickUps : MonoBehaviour
             if (currentPickup == PickupType.Life)
             {
                 // do something
+                GameManager.Instance.Lives++; 
                 Destroy(gameObject);
                 return; 
             }
             // do something in regards to score 
-            myController.score++; 
+            GameManager.Instance.Score++;  
             Destroy(gameObject); 
         }
     }

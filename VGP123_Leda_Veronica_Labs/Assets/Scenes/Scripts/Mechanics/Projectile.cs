@@ -23,23 +23,36 @@ public class Projectile : MonoBehaviour
 
     }
 
-    public void OnCollisionEnter2D(Collision2D collision)
+    
+
+    
+
+    public void OnCollisionEnter2D(Collision2D collision) 
     {
-        //if (collision.gameObject.CompareTag("Wall")) Destroy(gameObject); 
-        GameObject otherCollider = collision.gameObject;
-        if (otherCollider.name != "Player")
+        GameObject otherCollider = collision.gameObject; 
+        if (gameObject.CompareTag("EnemyProjectiles"))
         {
-            Destroy(gameObject);
-
+            if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("PlayerProjectiles")) 
+            {
+                Destroy(gameObject);
+            }
         }
-        if (gameObject.CompareTag("PlayerProjectiles"))
+        else if (gameObject.CompareTag("PlayerProjectiles"))
         {
-            if (collision.gameObject.CompareTag("Enemy")) collision.gameObject.GetComponent<Enemy>().TakeDamage(damage);
+            
+            if (collision.gameObject.CompareTag("Enemy"))
+            {
+                collision.gameObject.GetComponent<Enemy>().TakeDamage(damage);
+                Destroy(gameObject);
+            }
+            else if (gameObject.CompareTag("EnemyProjectiles"))
+            {
+                Destroy(gameObject); 
+            }
+            else if (gameObject.CompareTag("Wall"))
+            {
+                Destroy(gameObject);
+            } 
         }
-        
-        
-
     }
-
-
 }

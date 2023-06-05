@@ -4,24 +4,19 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    public Transform player;
-
     public float minXClamp;
-    public float maxXClamp; 
-    // Start is called before the first frame update
-    void Start()
+    public float maxXClamp;
+
+    private void LateUpdate()
     {
-        
+        if (!GameManager.Instance) return;
+        if (!GameManager.Instance.PlayerInstance) return;
+
+        Vector3 cameraPos;
+
+        cameraPos = transform.position;
+        cameraPos.x = Mathf.Clamp(GameManager.Instance.PlayerInstance.transform.position.x, minXClamp, maxXClamp);
+
+        transform.position = cameraPos;
     }
-
-    // Update is called once per frame
-    private void LateUpdate() { 
-        Vector3 cameraPos; 
-
-        cameraPos = transform.position; 
-        cameraPos.x = Mathf.Clamp(player.transform.position.x,minXClamp,maxXClamp);
-
-        transform.position = cameraPos; 
-        
-    }
-}
+} 
