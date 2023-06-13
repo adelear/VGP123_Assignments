@@ -223,6 +223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed527cd76751a40489bc5942451b8396, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fireSound: {fileID: 8300000, guid: b5123fb89f81d124a82c2ff1f435adc9, type: 3}
   projectileSpeed: 10
   spawnPointRight: {fileID: 4150791203298146939}
   spawnPointLeft: {fileID: 4150791204222924070}

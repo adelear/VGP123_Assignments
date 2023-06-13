@@ -128,6 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed527cd76751a40489bc5942451b8396, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fireSound: {fileID: 0}
   projectileSpeed: 0
   spawnPointRight: {fileID: 1010681680283160707}
   spawnPointLeft: {fileID: 1010681681338638191}
@@ -171,7 +172,7 @@ MonoBehaviour:
   maxHealth: 0
   projectileFireRate: 0
   firingRange: 0
-  player: {fileID: 0}
+  player: {fileID: 4150791204216886894, guid: d43ce61387817f44785b5d96ad2c6c34, type: 3}
 --- !u!1 &1010681680283160706
 GameObject:
   m_ObjectHideFlags: 0
