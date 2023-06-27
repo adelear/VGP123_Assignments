@@ -11,6 +11,7 @@ TagManager:
   - Squish
   - PlayerProjectiles
   - EnemyProjectiles
+  - DeathZone
   layers:
   - Default
   - TransparentFX

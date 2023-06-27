@@ -7,7 +7,8 @@ public class EnemyTurret : Enemy
 {
     Shoot shootScript;
     float timeSinceLastFire = 0.0f;
-
+    AudioSourceManager asm;
+    public AudioClip dieSound; 
     public float projectileFireRate;
     public float firingRange;
     public float turretFireDistance;
@@ -17,7 +18,7 @@ public class EnemyTurret : Enemy
     public override void Start()
     {
         base.Start();
-
+        asm = GetComponent<AudioSourceManager>(); 
         shootScript = GetComponent<Shoot>();
         shootScript.OnProjectileSpawned.AddListener(UpdateTimeSinceLastFire);
 
@@ -77,7 +78,10 @@ public class EnemyTurret : Enemy
 
     public override void Death()
     {
-        Destroy(gameObject);
+        asm.PlayOneShot(dieSound, false);
+        // Delay before destroying the enemy GameObject
+        float destroyDelay = dieSound.length; // Use the length of the death sound as the delay
+        Destroy(gameObject, destroyDelay); 
     }
 
     public override void TakeDamage(int damage)

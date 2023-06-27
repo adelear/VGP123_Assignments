@@ -15,13 +15,14 @@ public class PickUps : MonoBehaviour
 
     //public AudioClip pickupSound; 
     public PickupType currentPickup;
+    public AudioClip pickupSound; 
 
     // Start is called before the first frame update
     public void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            //collision.gameObject.GetComponent<AudioSourceManager>().PlayOneShot(pickupSound,false); //Playshot what 
+            collision.gameObject.GetComponent<AudioSourceManager>().PlayOneShot(pickupSound,false); //Playshot  
 
             if (currentPickup == PickupType.Powerup1)
             {

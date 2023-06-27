@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.Intrinsics;
 using UnityEngine;
 using UnityEngine.XR;
 
@@ -7,11 +8,11 @@ using UnityEngine.XR;
 public class EnemyWalker : Enemy 
 {
     Rigidbody2D rb; 
-    public float speed; 
+    public float speed;
     public override void Start()
     {
         base.Start();
-
+        anim = GetComponent<Animator>(); 
         rb = GetComponent<Rigidbody2D>(); 
 
         if (speed <= 0)
@@ -50,6 +51,6 @@ public class EnemyWalker : Enemy
 
     public void Squish()
     {
-        anim.SetTrigger("Squish");  
+        anim.SetTrigger("Squish");
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.Intrinsics;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -13,6 +14,8 @@ public class Projectile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        //asm = GetComponent<AudioSourceManager>(); 
         if (lifetime <= 0) lifetime = 2.0f;
         if (damage <= 0) damage = 1;
         GetComponent<Rigidbody2D>().velocity = new Vector2(speed, 0);
@@ -23,29 +26,28 @@ public class Projectile : MonoBehaviour
 
     }
 
-    
 
-    
 
-    public void OnCollisionEnter2D(Collision2D collision) 
+
+
+    public void OnCollisionEnter2D(Collision2D collision)
     {
-        GameObject otherCollider = collision.gameObject; 
+        GameObject otherCollider = collision.gameObject;
         if (gameObject.CompareTag("EnemyProjectiles"))
         {
-            if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("PlayerProjectiles")) 
+            if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("PlayerProjectiles"))
             {
                 if (collision.gameObject.CompareTag("Player"))
                 {
-                    GameManager.Instance.Lives--;
-                    GameManager.Instance.RespawnPlayer();  
-
-                } 
+                    GameManager.Instance.TakeDamage();
+                }
                 Destroy(gameObject);
             }
+
         }
         else if (gameObject.CompareTag("PlayerProjectiles"))
         {
-            
+
             if (collision.gameObject.CompareTag("Enemy"))
             {
                 collision.gameObject.GetComponent<Enemy>().TakeDamage(damage);
@@ -53,12 +55,13 @@ public class Projectile : MonoBehaviour
             }
             else if (gameObject.CompareTag("EnemyProjectiles"))
             {
-                Destroy(gameObject); 
+                Destroy(gameObject);
             }
             else if (gameObject.CompareTag("Wall"))
             {
                 Destroy(gameObject);
-            } 
+            }
         }
     }
+
 }

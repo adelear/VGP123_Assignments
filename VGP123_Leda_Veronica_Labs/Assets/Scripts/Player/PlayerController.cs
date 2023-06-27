@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour {
 
     //movement variables
     public float speed = 5.0f;
-    public float jumpForce = 300.0f;
+    public float jumpForce = 400.0f;
 
     //groundcheck stuff
     public bool isGrounded;
@@ -25,7 +25,8 @@ public class PlayerController : MonoBehaviour {
     public float groundCheckRadius = 0.02f;
 
     //Audio Played for Player 
-    //public AudioClip jumpSound; 
+    public AudioClip jumpSound;
+    public AudioClip killSound; 
 
     Coroutine jumpForceChange = null;
     Coroutine speedChange = null; 
@@ -39,12 +40,12 @@ public class PlayerController : MonoBehaviour {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
-        //asm = GetComponent<AudioSourceManager>();
+        asm = GetComponent<AudioSourceManager>();
 
 
         //Bad Input Check
         if (speed <= 0) speed = 5.0f;
-        if (jumpForce <= 0) jumpForce = 300.0f;
+        if (jumpForce <= 0) jumpForce = 400.0f;
         if (groundCheckRadius <= 0) groundCheckRadius = 0.02f;
 
         if (!groundCheck) groundCheck = GameObject.FindGameObjectWithTag("GroundCheck").GetComponent<Transform>();
@@ -75,7 +76,7 @@ public class PlayerController : MonoBehaviour {
         {
             rb.velocity = Vector2.zero; 
             rb.AddForce(Vector2.up * jumpForce);
-            //asm.PlayOneShot(jumpSound, false); 
+            asm.PlayOneShot(jumpSound, false); 
         }
          
         //My single frame fire
@@ -95,7 +96,7 @@ public class PlayerController : MonoBehaviour {
 
     public void IncreaseGravity()
     {
-        rb.gravityScale = 10; 
+        rb.gravityScale = 1; 
     }
 
     public void StartJumpForceChange()
@@ -155,10 +156,15 @@ public class PlayerController : MonoBehaviour {
         {
             Destroy(otherCollider);
         }
+        if (collision.CompareTag("DeathZone")){
+            //Respawn and lose a life 
+            GameManager.Instance.TakeDamage(); 
+        } 
 
         if (collision.CompareTag("Squish"))
         {
             EnemyWalker enemy = collision.gameObject.transform.parent.GetComponent<EnemyWalker>();
+            asm.PlayOneShot(killSound, false); 
             enemy.Squish();
             rb.AddForce(Vector2.up * 500);
         }

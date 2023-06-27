@@ -7,6 +7,8 @@ using UnityEngine.Events;
 [DefaultExecutionOrder(-1)]
 public class GameManager : MonoBehaviour
 {
+    AudioSourceManager asm; 
+    public AudioClip dieSound; 
     static GameManager _instance = null;
     public static GameManager Instance
     {
@@ -65,6 +67,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        asm = GetComponent<AudioSourceManager>(); 
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -125,14 +128,14 @@ public class GameManager : MonoBehaviour
         playerInstance.transform.position = spawnPoint.position;
     }
 
-    /*
-    public void TakeDamage(int damage)
+    
+    public void TakeDamage()
     {
-        Lives -= damage;
+        asm.PlayOneShot(dieSound, false); 
+        Lives -= 1;
         RespawnPlayer(); 
     }
    
-    */ 
     
     public void RespawnPlayer()
     {

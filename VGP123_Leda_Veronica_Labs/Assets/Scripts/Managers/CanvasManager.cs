@@ -2,10 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement; 
+using UnityEngine.SceneManagement;
+using UnityEngine.Audio; 
 
 public class CanvasManager : MonoBehaviour
 {
+    AudioSourceManager asm;
+    //Sounds for the menu 
+    public AudioSource audioSource; 
+    public AudioClip pauseSound;
+    public AudioClip gameMusic;
+    public AudioClip titleMusic; 
+
+    public AudioMixer audioMixer; 
     [Header("Buttons")]
     public Button startButton;
     public Button settingsButton;
@@ -29,6 +38,7 @@ public class CanvasManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        asm = GetComponent<AudioSourceManager>(); 
         if (startButton)
             startButton.onClick.AddListener(StartGame);
 
@@ -64,11 +74,12 @@ public class CanvasManager : MonoBehaviour
 
     void LoadTitle()
     {
-        SceneManager.LoadScene("Title"); 
+        SceneManager.LoadScene("Title");
     }
     void UnpauseGame()
     {
         Time.timeScale = 1.0f; 
+        audioSource.UnPause();   
         pauseMenu.SetActive(false);
 
         //SOMEETHING ELSE aka everything in the game stops
@@ -85,13 +96,17 @@ public class CanvasManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.P))
         {
-            pauseMenu.SetActive(!pauseMenu.activeSelf);   
+            pauseMenu.SetActive(!pauseMenu.activeSelf);
+            
 
             if (pauseMenu.activeSelf)
             {
                 //do something to pause
-                Time.timeScale = 0f;
-                pauseMenu.SetActive(true); 
+                
+                Time.timeScale = 0f; 
+                asm.PlayOneShot(pauseSound, false);
+                pauseMenu.SetActive(true);
+                audioSource.Pause(); 
             }
 
             else
@@ -106,6 +121,13 @@ public class CanvasManager : MonoBehaviour
     {
         mainMenu.SetActive(false);
         settingsMenu.SetActive(true);
+        if (volSlider && volSliderText)
+        {
+            float value;
+            audioMixer.GetFloat("MasterVol", out value);
+            volSlider.value = value + 80; 
+            volSliderText.text = (Mathf.Ceil(value + 80)).ToString();  
+        }
     }
 
     void ShowMainMenu()
@@ -115,12 +137,18 @@ public class CanvasManager : MonoBehaviour
     }
     void StartGame()
     {
-        SceneManager.LoadScene("Level"); 
+        
+        SceneManager.LoadScene("Level");; 
+        Time.timeScale = 1.0f;
+        audioSource.Stop();
+        audioSource.clip = gameMusic;
+        audioSource.Play(); 
     }
 
     void OnSliderValueChanged(float value)
     {
         volSliderText.text = value.ToString();
+        audioMixer.SetFloat("MasterVol", value - 80); 
     }
 
     void Quit()
